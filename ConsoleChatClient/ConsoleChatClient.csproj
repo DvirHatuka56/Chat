@@ -53,6 +53,7 @@
         <Compile Include="Requests\RegisterRequest.cs" />
         <Compile Include="Requests\Request.cs" />
         <Compile Include="Responses\ErrorResponse.cs" />
+        <Compile Include="Responses\LoginResponse.cs" />
         <Compile Include="Responses\NewTextResponse.cs" />
         <Compile Include="Responses\Response.cs" />
         <Compile Include="Responses\SuccessResponse.cs" />
