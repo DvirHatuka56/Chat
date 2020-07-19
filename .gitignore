@@ -1,0 +1,10 @@
+# Rider files
+/.idea/
+
+# Build files
+ChatServer/bin/
+ChatServer/obj/
+
+# Solution files
+Chat.sln.DotSettings.user
+ChatServer/ChatServer.csproj.user
