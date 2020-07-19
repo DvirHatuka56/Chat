@@ -1,0 +1,15 @@
+﻿using System;
+
+namespace ChatServer
+{
+    public class Constants
+    {
+        public const int ID_SEGMNET = 4;
+        public const int CHAT_SEGMNET = 4;
+        public const int LENGTH_SEGMNET = 4;
+        public const int CODE_SEGMNET = 3;
+        public const int NAME_LENGTH_SEGMENT = 2;
+        public const int TOTAL_IDS_SEGMENT = 2;
+        public const int RECIPIENTS_SEGMENT = 3;
+    }
+}

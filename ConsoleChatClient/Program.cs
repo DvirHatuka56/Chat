@@ -1,4 +1,4 @@
-﻿namespace ChatClient
+﻿namespace ConsoleChatClient
 {
     internal class Program
     {
