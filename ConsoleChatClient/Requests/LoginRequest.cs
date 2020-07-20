@@ -1,6 +1,4 @@
-﻿using ChatServer;
-
-namespace ConsoleChatClient.Requests
+﻿namespace ConsoleChatClient.Requests
 {
     public class LoginRequest : Request
     {

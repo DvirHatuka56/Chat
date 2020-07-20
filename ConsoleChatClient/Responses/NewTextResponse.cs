@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using ChatServer;
 using ConsoleChatClient.Models;
 
 namespace ConsoleChatClient.Responses
@@ -9,12 +8,13 @@ namespace ConsoleChatClient.Responses
     {
         public Message Message { get; set; }
         
-        public NewTextResponse()
+        public NewTextResponse(string response) : base(response)
         {
             Code = ResponseCode.NewMessage;
+            Deserialize(response);
         }
 
-        public void Deserialize(string response)
+        protected sealed override void Deserialize(string response)
         {
             int i = 0;
             

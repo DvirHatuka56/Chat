@@ -1,17 +1,26 @@
-﻿namespace ConsoleChatClient.Responses
+﻿using System;
+using ConsoleChatClient.Requests;
+
+namespace ConsoleChatClient.Responses
 {
     public class ErrorResponse : Response
     {
         public string Error { get; set; }
 
-        public ErrorResponse()
+        public ErrorResponse(string response) : base(response)
         {
             Code = ResponseCode.Error;
+            Deserialize(response);
         }
 
-        public void Deserialize(string response)
+        protected sealed override void Deserialize(string response)
         {
-            Error = response;
+            if (!response.StartsWith(((int) Code).ToString()))
+            {
+                throw new FormatException("The given response is not error response");
+            }
+
+            Error = response.Substring(Constants.CODE_SEGMNET);
         }
     }
 }

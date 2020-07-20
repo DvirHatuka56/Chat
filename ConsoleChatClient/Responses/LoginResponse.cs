@@ -1,5 +1,4 @@
 ﻿using System;
-using ChatServer;
 
 namespace ConsoleChatClient.Responses
 {
@@ -8,12 +7,13 @@ namespace ConsoleChatClient.Responses
         public int Id { get; set; }
         public string Name { get; set; }
         
-        public LoginResponse()
+        public LoginResponse(string response) : base(response)
         {
             Code = ResponseCode.Success;
+            Deserialize(response);
         }
 
-        public void Deserialize(string response)
+        protected sealed override void Deserialize(string response)
         {
             if (!response.Substring(0, Constants.CODE_SEGMNET).Equals("200")) { throw new FormatException(); }
 

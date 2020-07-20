@@ -1,4 +1,4 @@
-﻿using ChatServer;
+﻿using System;
 using ConsoleChatClient.Models;
 using ConsoleChatClient.Requests;
 using ConsoleChatClient.Responses;
@@ -27,21 +27,39 @@ namespace ConsoleChatClient
         {
             Client.SendMessage(new LoginRequest(id, password).ToString());
             string rawData = ReceiveResponse();
-            if (rawData != "200")
+
+            try
             {
-                error = new ErrorResponse();
-                error.Deserialize(rawData);
+                LoginResponse response = new LoginResponse(rawData);
+
+                User.Id = response.Id;
+                User.Name = response.Name;
+
+                error = null;
+                return true;
+            }
+            catch (FormatException)
+            {
+                error = new ErrorResponse(rawData);
                 return false;
             }
-            
-            LoginResponse response = new LoginResponse();
-            response.Deserialize(rawData);
-
-            User.Id = response.Id;
-            User.Name = response.Name;
-
-            error = null;
-            return true;
+        }
+        
+        public bool Logout(out ErrorResponse error)
+        {
+            Client.SendMessage(new LogoutRequest().ToString());
+            string rawData = ReceiveResponse();
+            try
+            {
+                SuccessResponse response = new SuccessResponse(rawData);
+                error = null;
+                return true;
+            }
+            catch (FormatException)
+            {
+                error = new ErrorResponse(rawData);
+                return false;
+            }
         }
 
         private string ReceiveResponse()

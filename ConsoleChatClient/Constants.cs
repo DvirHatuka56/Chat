@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace ChatServer
+﻿namespace ConsoleChatClient
 {
-    public class Constants
+    public static class Constants
     {
         public const int ID_SEGMNET = 4;
         public const int CHAT_SEGMNET = 4;

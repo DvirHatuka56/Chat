@@ -10,5 +10,11 @@
     public abstract class Response
     {
         public ResponseCode Code { get; set; }
+
+        protected Response(string response)
+        {
+        }
+
+        protected abstract void Deserialize(string response);
     }
 }
