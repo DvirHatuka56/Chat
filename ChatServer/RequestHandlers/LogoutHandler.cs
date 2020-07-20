@@ -12,7 +12,6 @@ namespace ChatServer.RequestHandlers
         public override Response Handle(ChatServer server, Request request)
         {
             server.RemoveUser(User);
-            User.Client.Close();
             return new SuccessResponse();
         }
     }

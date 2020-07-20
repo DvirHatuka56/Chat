@@ -53,6 +53,7 @@ namespace ConsoleChatClient
             {
                 SuccessResponse response = new SuccessResponse(rawData);
                 error = null;
+                Client.Close();
                 return true;
             }
             catch (FormatException)
