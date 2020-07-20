@@ -14,6 +14,11 @@
     public abstract class Request
     {
         public RequestCode Code { get; set; }
+
+        protected Request(RequestCode code)
+        {
+            Code = code;
+        }
         public new abstract string ToString();
     }
 }

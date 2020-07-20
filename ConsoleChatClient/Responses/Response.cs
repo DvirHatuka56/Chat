@@ -11,8 +11,9 @@
     {
         public ResponseCode Code { get; set; }
 
-        protected Response(string response)
+        protected Response(ResponseCode code, string response)
         {
+            Code = code;
         }
 
         protected abstract void Deserialize(string response);

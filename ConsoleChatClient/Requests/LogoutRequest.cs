@@ -2,10 +2,7 @@
 {
     public class LogoutRequest : Request
     {
-        public LogoutRequest()
-        {
-            Code = RequestCode.Logout;
-        }
+        public LogoutRequest() : base(RequestCode.Logout) { }
         
         public override string ToString()
         {

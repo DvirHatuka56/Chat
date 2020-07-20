@@ -5,9 +5,8 @@
         private int Id { get; }
         private string Password { get; }
 
-        public LoginRequest(int id, string password)
+        public LoginRequest(int id, string password) : base(RequestCode.Login)
         {
-            Code = RequestCode.Login;
             Id = id;
             Password = password;
         }

@@ -7,15 +7,17 @@ namespace ConsoleChatClient.Responses
         public int Id { get; set; }
         public string Name { get; set; }
         
-        public LoginResponse(string response) : base(response)
+        public LoginResponse(string response) : base(ResponseCode.Success, response)
         {
-            Code = ResponseCode.Success;
             Deserialize(response);
         }
 
         protected sealed override void Deserialize(string response)
         {
-            if (!response.Substring(0, Constants.CODE_SEGMNET).Equals("200")) { throw new FormatException(); }
+            if (!response.StartsWith(((int) Code).ToString()))
+            {
+                throw new FormatException($"The given response is not login response: {response}");
+            }
 
             int i = Constants.CODE_SEGMNET;
             Id = int.Parse(response.Substring(i, Constants.ID_SEGMNET));

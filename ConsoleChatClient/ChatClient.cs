@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using ConsoleChatClient.Models;
 using ConsoleChatClient.Requests;
 using ConsoleChatClient.Responses;
@@ -76,6 +79,45 @@ namespace ConsoleChatClient
             catch (FormatException)
             {
                 error = new ErrorResponse(raw);
+                return false;
+            }
+        }
+
+        public List<IncomingMessage> Update(List<int> chats, out ErrorResponse error)
+        {
+            Client.SendMessage(new UpdateRequest(chats).ToString());
+            List<IncomingMessage> messages = new List<IncomingMessage>();
+            NewTextResponse response;
+            string raw = ReceiveResponse();
+            do
+            {
+                try
+                {   
+                    if (IsSuccess(raw)) { break; }
+                    response = new NewTextResponse(raw);
+                    messages.Add(response.IncomingMessage);
+                    raw = ReceiveResponse();
+                }
+                catch (FormatException)
+                {
+                    error = new ErrorResponse(raw);
+                    return null;
+                }
+            } while (response.Code != ResponseCode.Success);
+
+            error = null;
+            return messages;
+        }
+
+        private bool IsSuccess(string raw)
+        {
+            try
+            {
+                SuccessResponse response = new SuccessResponse(raw);
+                return true;
+            }
+            catch (FormatException)
+            {
                 return false;
             }
         }

@@ -55,6 +55,7 @@
         <Compile Include="Requests\RegisterRequest.cs" />
         <Compile Include="Requests\Request.cs" />
         <Compile Include="Requests\SendTextRequest.cs" />
+        <Compile Include="Requests\UpdateRequest.cs" />
         <Compile Include="Responses\ErrorResponse.cs" />
         <Compile Include="Responses\LoginResponse.cs" />
         <Compile Include="Responses\NewTextResponse.cs" />

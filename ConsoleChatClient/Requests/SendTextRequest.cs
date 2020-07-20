@@ -7,9 +7,8 @@ namespace ConsoleChatClient.Requests
     {
         private OutgoingMessage OutgoingMessage { get; }
         
-        public SendTextRequest(OutgoingMessage outgoingMessage)
+        public SendTextRequest(OutgoingMessage outgoingMessage) : base(RequestCode.SendText)
         {
-            Code = RequestCode.SendText;
             OutgoingMessage = outgoingMessage;
         }
         

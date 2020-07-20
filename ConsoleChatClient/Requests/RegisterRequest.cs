@@ -5,9 +5,8 @@
         private string Name { get; }
         private string Password { get; }
 
-        public RegisterRequest(string name, string password)
+        public RegisterRequest(string name, string password) : base(RequestCode.Register)
         {
-            Code = RequestCode.Register;
             Name = name;
             Password = password;
         }

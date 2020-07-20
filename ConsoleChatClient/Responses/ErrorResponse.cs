@@ -7,9 +7,8 @@ namespace ConsoleChatClient.Responses
     {
         public string Error { get; set; }
 
-        public ErrorResponse(string response) : base(response)
+        public ErrorResponse(string response) : base(ResponseCode.Error, response)
         {
-            Code = ResponseCode.Error;
             Deserialize(response);
         }
 
@@ -17,7 +16,7 @@ namespace ConsoleChatClient.Responses
         {
             if (!response.StartsWith(((int) Code).ToString()))
             {
-                throw new FormatException("The given response is not error response");
+                throw new FormatException($"The given response is not error response: {response}");
             }
 
             Error = response.Substring(Constants.CODE_SEGMNET);

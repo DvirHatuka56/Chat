@@ -17,5 +17,11 @@ namespace ConsoleChatClient.Models
             ChatId = chatId;
             Time = time;
         }
+
+        public override string ToString()
+        {
+            return 
+                $"{SenderId} sent {Content} at {Time} in {ChatId}";
+        }
     }
 }

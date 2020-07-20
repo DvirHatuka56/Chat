@@ -4,17 +4,16 @@ namespace ConsoleChatClient.Responses
 {
     public class SuccessResponse : Response
     {
-        public SuccessResponse(string response) : base(response)
+        public SuccessResponse(string response) : base(ResponseCode.Success, response)
         {
-            Code = ResponseCode.Success;
             Deserialize(response);
         }
 
         protected sealed override void Deserialize(string response)
         {
-            if (!response.StartsWith(((int) ResponseCode.Success).ToString()))
+            if (!response.StartsWith(((int) Code).ToString()))
             {
-                throw new FormatException("The given response is not success response");
+                throw new FormatException($"The given response is not success response: {response}");
             }
         }
     }
