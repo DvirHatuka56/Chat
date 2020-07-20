@@ -8,7 +8,7 @@ namespace ConsoleChatClient
 {
     public class ChatClient
     {
-        public Client Client { get; }
+        private Client Client { get; }
         public User User { get; }
 
         public ChatClient(Client client, User user)
@@ -41,6 +41,41 @@ namespace ConsoleChatClient
             catch (FormatException)
             {
                 error = new ErrorResponse(rawData);
+                return false;
+            }
+        }
+
+        public bool Hello(out ErrorResponse error)
+        {
+            Client.SendMessage(new HelloRequest().ToString());
+            string rawData = ReceiveResponse();
+            try
+            {
+                SuccessResponse response = new SuccessResponse(rawData);
+                error = null;
+                return true;
+            }
+            catch (FormatException)
+            {
+                error = new ErrorResponse(rawData);
+                return false;
+            }
+        }
+
+        public bool SendText(OutgoingMessage outgoingMessage, out ErrorResponse error)
+        {
+            string msg = new SendTextRequest(outgoingMessage).ToString();
+            Client.SendMessage(msg);
+            string raw = ReceiveResponse();
+            try
+            {
+                SuccessResponse response = new SuccessResponse(raw);
+                error = null;
+                return true;
+            }
+            catch (FormatException)
+            {
+                error = new ErrorResponse(raw);
                 return false;
             }
         }

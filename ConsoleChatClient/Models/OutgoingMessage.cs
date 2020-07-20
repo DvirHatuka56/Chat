@@ -1,20 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ConsoleChatClient.Models
 {
-    public class Message
+    public class OutgoingMessage
     {
         public int SenderId { get; }
-        public DateTime Time { get; }
         public int ChatId { get; }
         public object Content { get; set; }
+        public List<int> Recipients { get; }
         public Type ContentType => Content.GetType();
 
-        public Message(int senderId, DateTime time, int chatId)
+        public OutgoingMessage(int senderId, int chatId, List<int> recipients)
         {
             SenderId = senderId;
-            Time = time;
             ChatId = chatId;
+            Recipients = recipients;
         }
     }
 }

@@ -6,7 +6,7 @@ namespace ConsoleChatClient.Responses
 {
     public class NewTextResponse : Response
     {
-        public Message Message { get; set; }
+        public IncomingMessage IncomingMessage { get; set; }
         
         public NewTextResponse(string response) : base(response)
         {
@@ -29,7 +29,7 @@ namespace ConsoleChatClient.Responses
 
             string content = response.Substring(i);
             
-            Message = new Message(senderId, time, chatId)
+            IncomingMessage = new IncomingMessage(senderId, chatId, time)
             {
                 Content = content
             };
