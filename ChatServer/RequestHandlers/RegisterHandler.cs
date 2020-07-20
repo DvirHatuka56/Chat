@@ -15,9 +15,10 @@ namespace ChatServer.RequestHandlers
 
         public override Response Handle(ChatServer server, Request request)
         {
-            int nameLength = User.Client.ReceiveInt(Constants.NAME_LENGTH_SEGMENT);
-            string name = User.Client.ReceiveString(nameLength);
-            string password = User.Client.ReceiveString(request.Length - Constants.NAME_LENGTH_SEGMENT - nameLength);
+            RequestParser parser = new RequestParser(request.RawRequest, Constants.CODE_SEGMNET);
+            int nameLength = parser.GetInt(Constants.NAME_LENGTH_SEGMENT);
+            string name = parser.Get(nameLength);
+            string password = parser.Get();
             if (!Manager.Register(name, password))
             {
                 return new ErrorResponse(new UserAlreadyExistsException());

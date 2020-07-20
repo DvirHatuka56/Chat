@@ -12,7 +12,8 @@ namespace ChatServer.RequestHandlers
 
         public override Response Handle(ChatServer server, Request request)
         {
-            int[] ids = ReadChatIds();
+            RequestParser parser = new RequestParser(request.RawRequest, Constants.CODE_SEGMNET);
+            int[] ids = ReadChatIds(parser);
             
             foreach (var id in ids)
             {
@@ -44,13 +45,13 @@ namespace ChatServer.RequestHandlers
             return new SuccessResponse();
         }
 
-        private int[] ReadChatIds()
+        private int[] ReadChatIds(RequestParser parser)
         {
-            int len = User.Client.ReceiveInt(Constants.TOTAL_IDS_SEGMENT);
+            int len = parser.GetInt(Constants.TOTAL_IDS_SEGMENT);
             int[] ids = new int[len];
             for (int i = 0; i < len; i++)
             {
-                ids[i] = User.Client.ReceiveInt(Constants.CHAT_SEGMNET);
+                ids[i] = parser.GetInt(Constants.CHAT_SEGMNET);
             }
 
             return ids;

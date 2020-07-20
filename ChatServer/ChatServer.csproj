@@ -96,6 +96,7 @@
     <Compile Include="RequestHandlers\LogoutHandler.cs" />
     <Compile Include="RequestHandlers\RegisterHandler.cs" />
     <Compile Include="RequestHandlers\RequestHandler.cs" />
+    <Compile Include="RequestHandlers\RequestParser.cs" />
     <Compile Include="RequestHandlers\SendTextHandler.cs" />
     <Compile Include="RequestHandlers\UpdateHandler.cs" />
     <Compile Include="Responses\ErrorResponse.cs" />

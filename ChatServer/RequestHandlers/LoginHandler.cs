@@ -15,10 +15,11 @@ namespace ChatServer.RequestHandlers
 
         public override Response Handle(ChatServer server, Request request)
         {
-            int id = User.Client.ReceiveInt(Constants.ID_SEGMNET);
+            RequestParser parser = new RequestParser(request.RawRequest, Constants.CODE_SEGMNET);
+            int id = parser.GetInt(Constants.ID_SEGMNET);
             if (!Manager.UserExists(id)) { return new ErrorResponse(new UserNotFoundException());}
 
-            string password = User.Client.ReceiveString(request.Length - Constants.ID_SEGMNET);
+            string password = parser.Get();
             if (!password.Equals(Manager.GetHashedPassword(id)))
             {
                 return new ErrorResponse(new WrongPasswordException());

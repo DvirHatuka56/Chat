@@ -20,7 +20,7 @@ namespace ChatServer
     public struct Request
     {
         public RequestCode RequestCode { get; set; }
-        public int Length { get; set; }
+        public string RawRequest { get; set; }
     }
     
     public class Handler
@@ -48,11 +48,12 @@ namespace ChatServer
             try
             {
                 int len = User.Client.ReceiveInt(Constants.LENGTH_SEGMNET);
-                Enum.TryParse(User.Client.ReceiveString(Constants.CODE_SEGMNET), out RequestCode code);
+                string raw = User.Client.ReceiveString(len);
+                Enum.TryParse(raw.Substring(0, Constants.CODE_SEGMNET),  out RequestCode code);
                 return new Request
                 {
-                    Length = len,
-                    RequestCode = code
+                    RequestCode = code,
+                    RawRequest = raw
                 };
             }
             catch (Exception e)

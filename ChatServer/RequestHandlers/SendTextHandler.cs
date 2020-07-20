@@ -13,12 +13,10 @@ namespace ChatServer.RequestHandlers
 
         public override Response Handle(ChatServer server, Request request)
         {
-            int chatId = User.Client.ReceiveInt(Constants.CHAT_SEGMNET);
-            var recipients = GetRecipients();
-            string text = User.Client.ReceiveString(request.Length 
-                                                    - Constants.CHAT_SEGMNET
-                                                    - recipients.Count * Constants.ID_SEGMNET
-                                                    - Constants.RECIPIENTS_SEGMENT);
+            RequestParser parser = new RequestParser(request.RawRequest, Constants.CODE_SEGMNET);
+            int chatId = parser.GetInt(Constants.CHAT_SEGMNET);
+            var recipients = GetRecipients(parser);
+            string text = parser.Get();
 
             Message message = new Message(User.Id, DateTime.Now, chatId, recipients)
             {
@@ -40,13 +38,13 @@ namespace ChatServer.RequestHandlers
             return new SuccessResponse();
         }
 
-        private List<int> GetRecipients()
+        private List<int> GetRecipients(RequestParser parser)
         {
-            int count = User.Client.ReceiveInt(Constants.RECIPIENTS_SEGMENT);
+            int count = parser.GetInt(Constants.RECIPIENTS_SEGMENT);
             List<int> recipients = new List<int>(count);
             for (int i = 0; i < count; i++)
             {
-                recipients.Add(User.Client.ReceiveInt(Constants.ID_SEGMNET));
+                recipients.Add(parser.GetInt(Constants.ID_SEGMNET));
             }
 
             return recipients;
