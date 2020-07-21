@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using ChatServer.Models;
 using ChatServer.Responses;
 
@@ -15,6 +16,7 @@ namespace ChatServer.RequestHandlers
             RequestParser parser = new RequestParser(request.RawRequest, Constants.CODE_SEGMNET);
             int[] ids = ReadChatIds(parser);
             
+            Monitor.Enter(server.UnsentMessages);
             foreach (var id in ids)
             {
                 if (!server.UnsentMessages.ContainsKey(id) || server.UnsentMessages[id] == null) continue;
@@ -41,7 +43,7 @@ namespace ChatServer.RequestHandlers
                     }
                 }
             }
-            
+            Monitor.Exit(server.UnsentMessages);
             return new SuccessResponse();
         }
 

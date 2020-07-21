@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using ChatServer.Models;
 using ChatServer.RequestHandlers;
 using ChatServer.Responses;
@@ -47,8 +48,11 @@ namespace ChatServer
         {
             try
             {
+                Monitor.Enter(User.Client);
                 int len = User.Client.ReceiveInt(Constants.LENGTH_SEGMNET);
                 string raw = User.Client.ReceiveString(len);
+                Monitor.Exit(User.Client);
+                
                 Enum.TryParse(raw.Substring(0, Constants.CODE_SEGMNET),  out RequestCode code);
                 return new Request
                 {
@@ -67,7 +71,10 @@ namespace ChatServer
         {
             try
             {
-                return RequestHandlers[request.RequestCode].Handle(server, request);
+                Monitor.Enter(User.Client);
+                Response response = RequestHandlers[request.RequestCode].Handle(server, request);
+                Monitor.Exit(User.Client);
+                return response;
             }
             catch (KeyNotFoundException)
             {

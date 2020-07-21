@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using ChatServer.Models;
 using ChatServer.Responses;
 
@@ -23,7 +24,7 @@ namespace ChatServer.RequestHandlers
                 Content = text,
                 ContentType = text.GetType()
             };
-
+            
             if (!server.UnsentMessages.ContainsKey(chatId))
             {
                 server.UnsentMessages.Add(chatId, new List<Message>
@@ -35,6 +36,10 @@ namespace ChatServer.RequestHandlers
             {
                 server.UnsentMessages[chatId].Add(message);
             }
+            
+            // Thread thread= new Thread(TrySendNow);
+            // thread.Start(new Tuple<ChatServer, Message>(server, message));
+
             return new SuccessResponse();
         }
 
@@ -50,9 +55,27 @@ namespace ChatServer.RequestHandlers
             return recipients;
         }
 
-        private bool TrySendNow(ChatServer server, Message message)
+        private void TrySendNow(object data)
         {
-            throw new NotImplementedException();
+            if (!(data is Tuple<ChatServer, Message>)) return;
+            ChatServer server = ((Tuple<ChatServer, Message>) data).Item1;
+            Message message = ((Tuple<ChatServer, Message>) data).Item2;
+            for (int i = 0; i < message.Recipients.Count; i++)
+            {
+                User user = server.GetUser(message.Recipients[i]);
+                if (user == null) { continue; }
+
+                UpdateHandler handler = new UpdateHandler(user);
+                string one = "1".PadLeft(Constants.NAME_LENGTH_SEGMENT, '0');
+                string chatId = message.ChatId.ToString().PadLeft(Constants.CHAT_SEGMNET, '0');
+                Response response = handler.Handle(server, new Request
+                {
+                    RequestCode = RequestCode.Update,
+                    RawRequest = $"{(int) RequestCode.Update}{one}{chatId}"
+                });
+                
+                user.Client.SendMessage(response.ToString(Constants.LENGTH_SEGMNET));
+            }
         }
     }
 }

@@ -98,6 +98,32 @@ namespace ConsoleChatClient
                     messages.Add(response.IncomingMessage);
                     raw = ReceiveResponse();
                 }
+                catch (FormatException e)
+                {
+                    Console.WriteLine(e);
+                    error = new ErrorResponse(raw);
+                    return null;
+                }
+            } while (response.Code != ResponseCode.Success);
+
+            error = null;
+            return messages;
+        }
+        
+        public IncomingMessage[] LiveUpdate(out ErrorResponse error)
+        {
+            List<IncomingMessage> messages = new List<IncomingMessage>();
+            NewTextResponse response;
+            string raw = ReceiveResponse();
+            do
+            {
+                try
+                {   
+                    if (IsSuccess(raw)) { break; }
+                    response = new NewTextResponse(raw);
+                    messages.Add(response.IncomingMessage);
+                    raw = ReceiveResponse();
+                }
                 catch (FormatException)
                 {
                     error = new ErrorResponse(raw);
@@ -106,7 +132,7 @@ namespace ConsoleChatClient
             } while (response.Code != ResponseCode.Success);
 
             error = null;
-            return messages;
+            return messages.ToArray();
         }
 
         private bool IsSuccess(string raw)
@@ -142,7 +168,7 @@ namespace ConsoleChatClient
 
         private string ReceiveResponse()
         {
-            int len = Client.ReceiveInt(Constants.ID_SEGMNET);
+            int len = Client.ReceiveInt(Constants.LENGTH_SEGMNET);
             return Client.ReceiveString(len);
         }
     }
