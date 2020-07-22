@@ -37,8 +37,8 @@ namespace ChatServer.RequestHandlers
                 server.UnsentMessages[chatId].Add(message);
             }
             
-            // Thread thread= new Thread(TrySendNow);
-            // thread.Start(new Tuple<ChatServer, Message>(server, message));
+            Thread thread= new Thread(TrySendNow);
+            thread.Start(new Tuple<ChatServer, Message>(server, message));
 
             return new SuccessResponse();
         }
