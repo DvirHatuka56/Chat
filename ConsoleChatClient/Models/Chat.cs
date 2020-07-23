@@ -6,13 +6,13 @@ namespace ConsoleChatClient.Models
     {
         public int Id { get; }
         public List<User> Users { get; }
-        public List<OutgoingMessage> Messages { get; }
+        public List<IncomingMessage> Messages { get; }
 
         public Chat(int id)
         {
             Id = id;
             Users = new List<User>();
-            Messages = new List<OutgoingMessage>();
+            Messages = new List<IncomingMessage>();
         }
     }
 }

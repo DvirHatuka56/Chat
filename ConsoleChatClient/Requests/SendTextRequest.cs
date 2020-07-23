@@ -7,7 +7,7 @@ namespace ConsoleChatClient.Requests
     {
         private OutgoingMessage OutgoingMessage { get; }
         
-        public SendTextRequest(OutgoingMessage outgoingMessage) : base(RequestCode.SendText)
+        public SendTextRequest(string key, OutgoingMessage outgoingMessage) : base(RequestCode.SendText, key)
         {
             OutgoingMessage = outgoingMessage;
         }
@@ -15,6 +15,7 @@ namespace ConsoleChatClient.Requests
         public override string ToString()
         {
             StringBuilder builder = new StringBuilder();
+            builder.Append(Key.PadLeft(Constants.REQUEST_KEY_SEGMENT, '0'));
             builder.Append((int) Code);
             builder.Append(OutgoingMessage.ChatId.ToString().PadLeft(Constants.CHAT_SEGMNET, '0'));
             builder.Append(OutgoingMessage.Recipients.Count.ToString().PadLeft(Constants.RECIPIENTS_SEGMENT, '0'));

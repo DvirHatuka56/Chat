@@ -8,7 +8,7 @@ namespace ConsoleChatClient.Responses
     {
         public IncomingMessage IncomingMessage { get; set; }
         
-        public NewTextResponse(string response) : base(ResponseCode.NewMessage, response)
+        public NewTextResponse(string key, string response) : base(ResponseCode.NewMessage, key, response)
         {
             Deserialize(response);
         }

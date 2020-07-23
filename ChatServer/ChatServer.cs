@@ -52,7 +52,6 @@ namespace ChatServer
                     if (request.RequestCode != RequestCode.Login && request.RequestCode != RequestCode.Register && !Users.Contains(user))
                     {
                         e.SendMessage(new ErrorResponse(request.RequestKey, new BadRequestException()).ToString());
-                        e.Close();
                         break;
                     }
                     
@@ -65,19 +64,18 @@ namespace ChatServer
                     
                     if (response.Code != ResponseCode.Error) continue;
                     Console.WriteLine((response as ErrorResponse)?.Exception.Message);
-                    e.Close();
-                    RemoveUser(user);
                     break;
                 }
                 catch (Exception exception)
                 {
                     Console.WriteLine(exception);
                     e.SendMessage(new ErrorResponse(request.RequestKey, exception).ToString());
-                    e.Close();
-                    RemoveUser(user);
                     break;
                 }
             } while (request.RequestCode != RequestCode.Logout);
+            
+            e.Close();
+            RemoveUser(user);
         }
 
         public User GetUser(int id)

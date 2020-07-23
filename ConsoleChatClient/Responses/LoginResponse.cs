@@ -7,7 +7,7 @@ namespace ConsoleChatClient.Responses
         public int Id { get; set; }
         public string Name { get; set; }
         
-        public LoginResponse(string response) : base(ResponseCode.Success, response)
+        public LoginResponse(string key, string response) : base(ResponseCode.LoginSuccess, key, response)
         {
             Deserialize(response);
         }

@@ -10,14 +10,27 @@
         SendFile = 301,
         Update = 500
     }
+
+    public struct RequestData
+    {
+        public RequestCode Code { get; set; }
+        public string Key { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return Key == (obj is RequestData data ? data : default).Key;
+        }
+    }
     
     public abstract class Request
     {
-        public RequestCode Code { get; set; }
+        public RequestCode Code { get; }
+        public string Key { get; }
 
-        protected Request(RequestCode code)
+        protected Request(RequestCode code, string key)
         {
             Code = code;
+            Key = key;
         }
         public new abstract string ToString();
     }

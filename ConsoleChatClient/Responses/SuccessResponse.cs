@@ -4,7 +4,7 @@ namespace ConsoleChatClient.Responses
 {
     public class SuccessResponse : Response
     {
-        public SuccessResponse(string response) : base(ResponseCode.Success, response)
+        public SuccessResponse(string key, string response) : base(ResponseCode.Success, key, response)
         {
             Deserialize(response);
         }

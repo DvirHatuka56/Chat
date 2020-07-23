@@ -7,7 +7,7 @@ namespace ConsoleChatClient.Responses
     {
         public string Error { get; set; }
 
-        public ErrorResponse(string response) : base(ResponseCode.Error, response)
+        public ErrorResponse(string key, string response) : base(ResponseCode.Error, key, response)
         {
             Deserialize(response);
         }

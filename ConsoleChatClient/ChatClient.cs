@@ -1,175 +1,150 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
 using ConsoleChatClient.Models;
+using ConsoleChatClient.RequestHandler;
+using ConsoleChatClient.RequestHandler.CLI;
 using ConsoleChatClient.Requests;
+using ConsoleChatClient.ResponseHandlers;
 using ConsoleChatClient.Responses;
 using Network.Client;
+using LoginHandler = ConsoleChatClient.ResponseHandlers.LoginHandler;
 
 namespace ConsoleChatClient
 {
     public class ChatClient
     {
-        private Client Client { get; }
         public User User { get; }
+        public List<RequestData> WaitingRequests { get; }
+        private Client Client { get; set; }
+        private Queue<ResponseData> Responses { get; }
+        private Dictionary<ResponseCode, IResponseHandler> Handlers { get; }
+        private Thread ReaderThread { get; }
+        private event EventHandler NewResponse;
 
-        public ChatClient(Client client, User user)
-        {
-            Client = client;
-            User = user;
-        }
-
+        // TODO: ctorp
+        
         public ChatClient()
         {
             Client = new Client(Constants.IP, Constants.PORT);
             User = new User();
+            Responses = new Queue<ResponseData>();
+            WaitingRequests = new List<RequestData>();
+            Handlers = new Dictionary<ResponseCode, IResponseHandler>
+            {
+                {ResponseCode.Success, new SuccessHandler()},
+                {ResponseCode.LoginSuccess, new LoginHandler()},
+                {ResponseCode.Error, new ErrorHandler()},
+                {ResponseCode.NewMessage, new NewTextMessage()}
+            };
+            ReaderThread = new Thread(Reader);
+            NewResponse += OnNewResponse;
         }
 
-        public bool Login(int id, string password, out ErrorResponse error)
+        public void Restart()
         {
-            Client.SendMessage(new LoginRequest(id, password).ToString());
-            string rawData = ReceiveResponse();
-
-            try
-            {
-                LoginResponse response = new LoginResponse(rawData);
-
-                User.Id = response.Id;
-                User.Name = response.Name;
-
-                error = null;
-                return true;
-            }
-            catch (FormatException)
-            {
-                error = new ErrorResponse(rawData);
-                return false;
-            }
+            Client = new Client(Constants.IP, Constants.PORT);
         }
 
-        public bool Hello(out ErrorResponse error)
+        public void Start(RequestManager manager)
         {
-            Client.SendMessage(new HelloRequest().ToString());
-            string rawData = ReceiveResponse();
-            try
+            ReaderThread.Start();
+            manager.Manage();
+        }
+
+        public void StartCLI()
+        {
+            Start(new CLIRequestManager(this));
+        }
+
+        private void OnNewResponse(object sender, EventArgs e)
+        {
+            while (Responses.Count != 0)
             {
-                SuccessResponse response = new SuccessResponse(rawData);
-                error = null;
-                return true;
-            }
-            catch (FormatException)
-            {
-                error = new ErrorResponse(rawData);
-                return false;
+                var response = Responses.Dequeue();
+                Handlers[response.Code].Handle(this, response);
             }
         }
 
-        public bool SendText(OutgoingMessage outgoingMessage, out ErrorResponse error)
+        private void Reader()
         {
-            string msg = new SendTextRequest(outgoingMessage).ToString();
-            Client.SendMessage(msg);
-            string raw = ReceiveResponse();
-            try
-            {
-                SuccessResponse response = new SuccessResponse(raw);
-                error = null;
-                return true;
-            }
-            catch (FormatException)
-            {
-                error = new ErrorResponse(raw);
-                return false;
-            }
-        }
-
-        public List<IncomingMessage> Update(List<int> chats, out ErrorResponse error)
-        {
-            Client.SendMessage(new UpdateRequest(chats).ToString());
-            List<IncomingMessage> messages = new List<IncomingMessage>();
-            NewTextResponse response;
-            string raw = ReceiveResponse();
-            do
+            while (true)
             {
                 try
-                {   
-                    if (IsSuccess(raw)) { break; }
-                    response = new NewTextResponse(raw);
-                    messages.Add(response.IncomingMessage);
-                    raw = ReceiveResponse();
-                }
-                catch (FormatException e)
                 {
-                    Console.WriteLine(e);
-                    error = new ErrorResponse(raw);
-                    return null;
+                    Responses.Enqueue(ReadResponse());
+                    NewResponse?.Invoke(null, EventArgs.Empty);
                 }
-            } while (response.Code != ResponseCode.Success);
-
-            error = null;
-            return messages;
-        }
-        
-        public IncomingMessage[] LiveUpdate(out ErrorResponse error)
-        {
-            List<IncomingMessage> messages = new List<IncomingMessage>();
-            NewTextResponse response;
-            string raw = ReceiveResponse();
-            do
-            {
-                try
-                {   
-                    if (IsSuccess(raw)) { break; }
-                    response = new NewTextResponse(raw);
-                    messages.Add(response.IncomingMessage);
-                    raw = ReceiveResponse();
-                }
-                catch (FormatException)
+                catch (ThreadAbortException)
                 {
-                    error = new ErrorResponse(raw);
-                    return null;
+                    return;
                 }
-            } while (response.Code != ResponseCode.Success);
-
-            error = null;
-            return messages.ToArray();
-        }
-
-        private bool IsSuccess(string raw)
-        {
-            try
-            {
-                SuccessResponse response = new SuccessResponse(raw);
-                return true;
-            }
-            catch (FormatException)
-            {
-                return false;
-            }
-        }
-        
-        public bool Logout(out ErrorResponse error)
-        {
-            Client.SendMessage(new LogoutRequest().ToString());
-            string rawData = ReceiveResponse();
-            try
-            {
-                SuccessResponse response = new SuccessResponse(rawData);
-                error = null;
-                Client.Close();
-                return true;
-            }
-            catch (FormatException)
-            {
-                error = new ErrorResponse(rawData);
-                return false;
+                catch (Exception)
+                {
+                    
+                }
             }
         }
 
-        private string ReceiveResponse()
+        private ResponseData ReadResponse()
         {
             int len = Client.ReceiveInt(Constants.LENGTH_SEGMNET);
-            return Client.ReceiveString(len);
+            string raw = Client.ReceiveString(len);
+            string key = raw.Substring(0, Constants.REQUEST_KEY_SEGMENT);
+            raw = raw.Substring(Constants.REQUEST_KEY_SEGMENT);
+            Enum.TryParse(raw.Substring(0, Constants.CODE_SEGMNET), out ResponseCode code);
+            return new ResponseData
+            {
+                Code = code,
+                Key = key,
+                Raw = raw
+            };
+        }
+
+        public void SendRequest(Request request)
+        {
+            Client.SendMessage(request.ToString());
+            WaitingRequests.Add(new RequestData
+            {
+                Code = request.Code,
+                Key = request.Key
+            });
+        }
+
+        public static string GenerateKey()
+        {
+            int size = Constants.REQUEST_KEY_SEGMENT;
+            char[] chars =
+                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".ToCharArray(); 
+            byte[] data = new byte[4*size];
+            using (RNGCryptoServiceProvider crypto = new RNGCryptoServiceProvider())
+            {
+                crypto.GetBytes(data);
+            }
+            StringBuilder result = new StringBuilder(size);
+            for (int i = 0; i < size; i++)
+            {
+                var rnd = BitConverter.ToUInt32(data, i * 4);
+                var idx = rnd % chars.Length;
+
+                result.Append(chars[idx]);
+            }
+
+            return result.ToString();
+        }
+
+        public void Close()
+        {
+            if (ReaderThread.IsAlive)
+            {
+                ReaderThread.Abort();
+            }
+            if (Client.IsConnected)
+            {
+                Client.Close();
+            }
         }
     }
 }

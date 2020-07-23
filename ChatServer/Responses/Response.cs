@@ -3,6 +3,7 @@
     public enum ResponseCode
     {
         Success = 200,
+        LoginSuccess = 210,
         NewMessage = 300,
         Error = 400
     }

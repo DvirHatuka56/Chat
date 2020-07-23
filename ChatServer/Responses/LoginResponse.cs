@@ -6,7 +6,7 @@ namespace ChatServer.Responses
     {
         private User User { get; }
 
-        public LoginResponse(string key, User user) : base(ResponseCode.Success, key)
+        public LoginResponse(string key, User user) : base(ResponseCode.LoginSuccess, key)
         {
             User = user;
         }
