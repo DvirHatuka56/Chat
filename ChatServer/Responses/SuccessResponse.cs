@@ -2,14 +2,11 @@
 {
     public class SuccessResponse : Response
     {
-        public SuccessResponse()
+        public SuccessResponse() : base(ResponseCode.Success) { }
+        public override string ToString()
         {
-            Code = ResponseCode.Success;
-        }
-        public override string ToString(int lengthSegment)
-        {
-            string response = $"{(int)ResponseCode.Success}";
-            return $"{response.Length.ToString().PadLeft(lengthSegment, '0')}{response}";
+            string response = $"{(int) Code}";
+            return $"{response.Length.ToString().PadLeft(Constants.LENGTH_SEGMNET, '0')}{response}";
         }
     }
 }

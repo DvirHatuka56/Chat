@@ -74,7 +74,7 @@ namespace ChatServer.RequestHandlers
                     RawRequest = $"{(int) RequestCode.Update}{one}{chatId}"
                 });
                 
-                user.Client.SendMessage(response.ToString(Constants.LENGTH_SEGMNET));
+                user.Client.SendMessage(response.ToString());
             }
         }
     }

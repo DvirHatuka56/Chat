@@ -6,16 +6,15 @@ namespace ChatServer.Responses
     {
         private User User { get; }
 
-        public RegisterResponse(User user)
+        public RegisterResponse(User user) : base(ResponseCode.Success)
         {
             User = user;
-            Code = ResponseCode.Success;
         }
 
-        public override string ToString(int lengthSegment)
+        public override string ToString()
         {
             string response = $"{(int)Code}{User.Id.ToString().PadLeft(Constants.ID_SEGMNET, '0')}{User.Name}";
-            return $"{response.Length.ToString().PadLeft(lengthSegment, '0')}{response}";
+            return $"{response.Length.ToString().PadLeft(Constants.LENGTH_SEGMNET, '0')}{response}";
         }
     }
 }

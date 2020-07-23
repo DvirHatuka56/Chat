@@ -6,15 +6,14 @@ namespace ChatServer.Responses
     {
         public Exception Exception { get; }
         
-        public ErrorResponse(Exception exception)
+        public ErrorResponse(Exception exception) : base(ResponseCode.Error)
         {
-            Code = ResponseCode.Error;
             Exception = exception;
         }
-        public override string ToString(int lengthSegment)
+        public override string ToString()
         {
-            string response = $"{(int)ResponseCode.Error}{Exception.Message}";
-            return $"{response.Length.ToString().PadLeft(lengthSegment, '0')}{response}";
+            string response = $"{(int) Code}{Exception.Message}";
+            return $"{response.Length.ToString().PadLeft(Constants.LENGTH_SEGMNET, '0')}{response}";
         }
     }
 }

@@ -26,7 +26,7 @@ namespace ChatServer.RequestHandlers
                     var message = server.UnsentMessages[id][i];
                     if (message.Recipients.Contains(User.Id))
                     {
-                        User.Client.SendMessage(new NewTextResponse(message).ToString(Constants.LENGTH_SEGMNET));
+                        User.Client.SendMessage(new NewTextResponse(message).ToString());
                     }
 
                     message.Recipients.Remove(User.Id);

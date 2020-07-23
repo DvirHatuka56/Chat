@@ -7,13 +7,12 @@ namespace ChatServer.Responses
     {
         private Message Message { get; }
         
-        public NewTextResponse(Message message)
+        public NewTextResponse(Message message) : base(ResponseCode.NewMessage)
         {
             Message = message;
-            Code = ResponseCode.NewMessage;
         }
 
-        public override string ToString(int lengthSegment)
+        public override string ToString()
         {
             StringBuilder builder = new StringBuilder();
             builder.Append((int) Code);
@@ -21,7 +20,7 @@ namespace ChatServer.Responses
             builder.Append(Message.SenderId.ToString().PadLeft(Constants.ID_SEGMNET, '0'));
             builder.Append(Message.Time.ToString("ddMMyyyyhhmmsstt")); // 19072020125403 => 19.7.2020 12:54:03
             builder.Append(Message.Content);
-            return $"{builder.Length.ToString().PadLeft(lengthSegment, '0')}{builder}";
+            return $"{builder.Length.ToString().PadLeft(Constants.LENGTH_SEGMNET, '0')}{builder}";
         }
     }
 }

@@ -51,7 +51,7 @@ namespace ChatServer
                     
                     if (request.RequestCode != RequestCode.Login && request.RequestCode != RequestCode.Register && !Users.Contains(user))
                     {
-                        e.SendMessage(new ErrorResponse(new BadRequestException()).ToString(Constants.LENGTH_SEGMNET));
+                        e.SendMessage(new ErrorResponse(new BadRequestException()).ToString());
                         e.Close();
                         break;
                     }
@@ -59,7 +59,7 @@ namespace ChatServer
                     Console.WriteLine(request.RequestCode);
                     
                     Response response = handler.Handle(this, request);
-                    user.Client.SendMessage(response.ToString(Constants.LENGTH_SEGMNET));
+                    user.Client.SendMessage(response.ToString());
                     
                     Console.WriteLine(UsersToString());
                     
@@ -72,7 +72,7 @@ namespace ChatServer
                 catch (Exception exception)
                 {
                     Console.WriteLine(exception);
-                    e.SendMessage(new ErrorResponse(exception).ToString(Constants.LENGTH_SEGMNET));
+                    e.SendMessage(new ErrorResponse(exception).ToString());
                     e.Close();
                     RemoveUser(user);
                     break;

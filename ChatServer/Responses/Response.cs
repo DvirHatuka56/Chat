@@ -9,7 +9,12 @@
     
     public abstract class Response
     {
-        public ResponseCode Code { get; protected set; }
-        public abstract string ToString(int lengthSegment);
+        public ResponseCode Code { get; }
+
+        protected Response(ResponseCode code)
+        {
+            Code = code;
+        }
+        public new abstract string ToString();
     }
 }
