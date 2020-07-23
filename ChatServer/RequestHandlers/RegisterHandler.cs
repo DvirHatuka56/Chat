@@ -21,13 +21,13 @@ namespace ChatServer.RequestHandlers
             string password = parser.Get();
             if (!Manager.Register(name, password))
             {
-                return new ErrorResponse(new UserAlreadyExistsException());
+                return new ErrorResponse(request.RequestKey, new UserAlreadyExistsException());
             }
 
             User.Id = Manager.GetId(name);
             User.Name = name;
             server.AddUser(User);
-            return new RegisterResponse(User);
+            return new RegisterResponse(request.RequestKey, User);
         }
     }
 }

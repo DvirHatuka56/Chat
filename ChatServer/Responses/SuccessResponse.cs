@@ -2,10 +2,10 @@
 {
     public class SuccessResponse : Response
     {
-        public SuccessResponse() : base(ResponseCode.Success) { }
+        public SuccessResponse(string key) : base(ResponseCode.Success, key) { }
         public override string ToString()
         {
-            string response = $"{(int) Code}";
+            string response = $"{Key.PadLeft(Constants.REQUEST_KEY_SEGMENT, '0')}{(int) Code}";
             return $"{response.Length.ToString().PadLeft(Constants.LENGTH_SEGMNET, '0')}{response}";
         }
     }

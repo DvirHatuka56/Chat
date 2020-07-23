@@ -26,7 +26,7 @@ namespace ChatServer.RequestHandlers
                     var message = server.UnsentMessages[id][i];
                     if (message.Recipients.Contains(User.Id))
                     {
-                        User.Client.SendMessage(new NewTextResponse(message).ToString());
+                        User.Client.SendMessage(new NewTextResponse(request.RequestKey, message).ToString());
                     }
 
                     message.Recipients.Remove(User.Id);
@@ -44,7 +44,7 @@ namespace ChatServer.RequestHandlers
                 }
             }
             Monitor.Exit(server.UnsentMessages);
-            return new SuccessResponse();
+            return new SuccessResponse(request.RequestKey);
         }
 
         private int[] ReadChatIds(RequestParser parser)

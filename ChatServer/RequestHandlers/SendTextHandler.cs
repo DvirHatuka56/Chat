@@ -40,7 +40,7 @@ namespace ChatServer.RequestHandlers
             Thread thread= new Thread(TrySendNow);
             thread.Start(new Tuple<ChatServer, Message>(server, message));
 
-            return new SuccessResponse();
+            return new SuccessResponse(request.RequestKey);
         }
 
         private List<int> GetRecipients(RequestParser parser)
@@ -68,13 +68,12 @@ namespace ChatServer.RequestHandlers
                 UpdateHandler handler = new UpdateHandler(user);
                 string one = "1".PadLeft(Constants.NAME_LENGTH_SEGMENT, '0');
                 string chatId = message.ChatId.ToString().PadLeft(Constants.CHAT_SEGMNET, '0');
-                Response response = handler.Handle(server, new Request
+                handler.Handle(server, new Request
                 {
                     RequestCode = RequestCode.Update,
+                    RequestKey = "",
                     RawRequest = $"{(int) RequestCode.Update}{one}{chatId}"
                 });
-                
-                user.Client.SendMessage(response.ToString());
             }
         }
     }

@@ -11,6 +11,7 @@ namespace ChatServer
         public const int NAME_LENGTH_SEGMENT = 2;
         public const int TOTAL_IDS_SEGMENT = 2;
         public const int RECIPIENTS_SEGMENT = 3;
+        public const int REQUEST_KEY_SEGMENT = 8;
 
         public static string GetConnectionString()
         {

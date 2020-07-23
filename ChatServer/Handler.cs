@@ -21,6 +21,7 @@ namespace ChatServer
     public struct Request
     {
         public RequestCode RequestCode { get; set; }
+        public string RequestKey { get; set; }
         public string RawRequest { get; set; }
     }
     
@@ -50,6 +51,7 @@ namespace ChatServer
             {
                 Monitor.Enter(User.Client);
                 int len = User.Client.ReceiveInt(Constants.LENGTH_SEGMNET);
+                string key = User.Client.ReceiveString(Constants.REQUEST_KEY_SEGMENT);
                 string raw = User.Client.ReceiveString(len);
                 Monitor.Exit(User.Client);
                 
@@ -57,6 +59,7 @@ namespace ChatServer
                 return new Request
                 {
                     RequestCode = code,
+                    RequestKey = key,
                     RawRequest = raw
                 };
             }
@@ -78,11 +81,11 @@ namespace ChatServer
             }
             catch (KeyNotFoundException)
             {
-                return new ErrorResponse(new BadRequestException());
+                return new ErrorResponse(request.RequestKey, new BadRequestException());
             }
             catch (Exception e)
             {
-                return new ErrorResponse(e);
+                return new ErrorResponse(request.RequestKey, e);
             }
         }
     }

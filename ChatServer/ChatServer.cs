@@ -40,7 +40,7 @@ namespace ChatServer
 
         private void ServerOnHandleClient(object sender, Client e)
         {
-            Request request;
+            Request request = new Request();
             User user = new User(e);
             do
             {
@@ -51,7 +51,7 @@ namespace ChatServer
                     
                     if (request.RequestCode != RequestCode.Login && request.RequestCode != RequestCode.Register && !Users.Contains(user))
                     {
-                        e.SendMessage(new ErrorResponse(new BadRequestException()).ToString());
+                        e.SendMessage(new ErrorResponse(request.RequestKey, new BadRequestException()).ToString());
                         e.Close();
                         break;
                     }
@@ -72,7 +72,7 @@ namespace ChatServer
                 catch (Exception exception)
                 {
                     Console.WriteLine(exception);
-                    e.SendMessage(new ErrorResponse(exception).ToString());
+                    e.SendMessage(new ErrorResponse(request.RequestKey, exception).ToString());
                     e.Close();
                     RemoveUser(user);
                     break;

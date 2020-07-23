@@ -7,7 +7,7 @@ namespace ChatServer.Responses
     {
         private Message Message { get; }
         
-        public NewTextResponse(Message message) : base(ResponseCode.NewMessage)
+        public NewTextResponse(string key, Message message) : base(ResponseCode.NewMessage, key)
         {
             Message = message;
         }
@@ -15,6 +15,7 @@ namespace ChatServer.Responses
         public override string ToString()
         {
             StringBuilder builder = new StringBuilder();
+            builder.Append(Key.PadLeft(Constants.REQUEST_KEY_SEGMENT, '0'));
             builder.Append((int) Code);
             builder.Append(Message.ChatId.ToString().PadLeft(Constants.CHAT_SEGMNET, '0'));
             builder.Append(Message.SenderId.ToString().PadLeft(Constants.ID_SEGMNET, '0'));

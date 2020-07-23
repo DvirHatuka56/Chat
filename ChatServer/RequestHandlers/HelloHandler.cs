@@ -11,7 +11,7 @@ namespace ChatServer.RequestHandlers
 
         public override Response Handle(ChatServer server, Request request)
         {
-            return new SuccessResponse();
+            return new SuccessResponse(request.RequestKey);
         }
     }
 }

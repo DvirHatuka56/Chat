@@ -12,7 +12,7 @@ namespace ChatServer.RequestHandlers
         public override Response Handle(ChatServer server, Request request)
         {
             server.RemoveUser(User);
-            return new SuccessResponse();
+            return new SuccessResponse(request.RequestKey);
         }
     }
 }
