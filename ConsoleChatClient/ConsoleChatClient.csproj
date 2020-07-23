@@ -50,9 +50,11 @@
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="RequestHandler\CLI\CLIRequestManager.cs" />
+        <Compile Include="RequestHandler\CLI\HelloHandler.cs" />
         <Compile Include="RequestHandler\CLI\LoginHandler.cs" />
         <Compile Include="RequestHandler\CLI\LogoutHandler.cs" />
         <Compile Include="RequestHandler\CLI\SendTextHandler.cs" />
+        <Compile Include="RequestHandler\CLI\UpdateHandler.cs" />
         <Compile Include="RequestHandler\IRequestHandler.cs" />
         <Compile Include="RequestHandler\RequestManager.cs" />
         <Compile Include="Requests\HelloRequest.cs" />

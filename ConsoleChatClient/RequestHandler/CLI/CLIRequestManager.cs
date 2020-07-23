@@ -11,8 +11,10 @@ namespace ConsoleChatClient.RequestHandler.CLI
             Handlers = new Dictionary<string, IRequestHandler>
             {
                 { "login", new LoginHandler() },
-                {"send", new SendTextHandler()},
-                {"logout", new LogoutHandler()}
+                { "send", new SendTextHandler() },
+                { "logout", new LogoutHandler() },
+                { "hello", new HelloHandler() },
+                { "update", new UpdateHandler()}
             };
         }
         
