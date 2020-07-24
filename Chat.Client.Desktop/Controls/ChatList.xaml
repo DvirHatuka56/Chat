@@ -1,0 +1,10 @@
+﻿<UserControl x:Class="Chat.Client.Desktop.Controls.ChatList"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <UserControl.Content>
+        <StackPanel>
+            <TextBox x:Name="SearchBox" x:FieldModifier="private" TextChanged="SearchBox_OnTextChanged"/>
+            <ListView x:Name="ChatsList" x:FieldModifier="private"/>
+        </StackPanel>
+    </UserControl.Content>
+</UserControl>

@@ -3,11 +3,23 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Chat.Client.Desktop"
+        xmlns:controls="clr-namespace:Chat.Client.Desktop.Controls"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-    <StackPanel>
-        <Label x:Name="Label"/>
-        <Button Content="Update" Click="Update_OnClick"/>
-    </StackPanel>
+    <Window.Content>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <Label x:Name="Label" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"/>
+            <controls:ChatList x:Name="ChatList" Grid.Row="1" Grid.Column="0"/>
+            <Button Grid.Row="1" Grid.Column="1" Content="Update" Click="Update_OnClick"/>
+        </Grid>
+    </Window.Content>
 </Window>

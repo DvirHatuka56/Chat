@@ -50,9 +50,13 @@
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
         </ApplicationDefinition>
+        <Compile Include="Controls\ChatList.xaml.cs">
+          <DependentUpon>ChatList.xaml</DependentUpon>
+        </Compile>
         <Compile Include="ResponseHandlers\LoginHandler.cs" />
         <Compile Include="ResponseHandlers\ErrorHandler.cs" />
         <Compile Include="ResponseHandlers\NewTextHandler.cs" />
+        <Page Include="Controls\ChatList.xaml" />
         <Page Include="Controls\Field.xaml" />
         <Page Include="LoginWindow.xaml" />
         <Page Include="MainWindow.xaml">
