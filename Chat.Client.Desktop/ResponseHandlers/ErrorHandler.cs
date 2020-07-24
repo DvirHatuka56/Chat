@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Windows;
 using Chat.Client.Requests;
+using Chat.Client.ResponseHandlers;
 using Chat.Client.Responses;
 
-namespace Chat.Client.ResponseHandlers
+namespace Chat.Client.Desktop.ResponseHandlers
 {
     public class ErrorHandler : IResponseHandler
     {
@@ -10,7 +12,7 @@ namespace Chat.Client.ResponseHandlers
         {
             ErrorResponse errorResponse = new ErrorResponse(response.Key, response.Raw);
             RequestData requestData = client.WaitingRequests.Find(data => data.Key.Equals(response.Key));
-            Console.WriteLine($"Error response on {requestData.Code} request, key {requestData.Key}.{Environment.NewLine}{errorResponse.Error}");
+            MessageBox.Show($"Error response on {requestData.Code} request, key {requestData.Key}.{Environment.NewLine}{errorResponse.Error}");
             client.Restart();
         }
     }

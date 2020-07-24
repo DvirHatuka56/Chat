@@ -66,7 +66,7 @@
         <Compile Include="Requests\UpdateRequest.cs" />
         <Compile Include="ResponseHandlers\ErrorHandler.cs" />
         <Compile Include="ResponseHandlers\LoginHandler.cs" />
-        <Compile Include="ResponseHandlers\NewTextMessage.cs" />
+        <Compile Include="ResponseHandlers\NewTextHandler.cs" />
         <Compile Include="ResponseHandlers\IResponseHandler.cs" />
         <Compile Include="ResponseHandlers\SuccessHandler.cs" />
         <Compile Include="Responses\ErrorResponse.cs" />

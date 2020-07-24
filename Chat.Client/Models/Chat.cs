@@ -5,13 +5,13 @@ namespace Chat.Client.Models
     public class Chat
     {
         public int Id { get; }
-        public List<User> Users { get; }
+        public List<int> Members { get; }
         public List<IncomingMessage> Messages { get; }
 
         public Chat(int id)
         {
             Id = id;
-            Users = new List<User>();
+            Members = new List<int>();
             Messages = new List<IncomingMessage>();
         }
     }

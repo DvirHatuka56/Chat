@@ -9,7 +9,6 @@ using Chat.Client.RequestHandler.CLI;
 using Chat.Client.Requests;
 using Chat.Client.ResponseHandlers;
 using Chat.Client.Responses;
-using Network.Client;
 using LoginHandler = Chat.Client.ResponseHandlers.LoginHandler;
 
 namespace Chat.Client
@@ -23,27 +22,37 @@ namespace Chat.Client
         private Dictionary<ResponseCode, IResponseHandler> Handlers { get; }
         private Thread ReaderThread { get; }
         private event EventHandler NewResponse;
-        
-        public ChatClient()
+
+        public ChatClient(Dictionary<ResponseCode, IResponseHandler> handlers)
         {
             Client = new Network.Client.Client(Constants.IP, Constants.PORT);
             User = new User();
             Responses = new Queue<ResponseData>();
             WaitingRequests = new List<RequestData>();
-            Handlers = new Dictionary<ResponseCode, IResponseHandler>
-            {
-                {ResponseCode.Success, new SuccessHandler()},
-                {ResponseCode.LoginSuccess, new ResponseHandlers.LoginHandler()},
-                {ResponseCode.Error, new ErrorHandler()},
-                {ResponseCode.NewMessage, new NewTextMessage()}
-            };
+            Handlers = handlers;
             ReaderThread = new Thread(Reader);
             NewResponse += OnNewResponse;
+        }
+        
+        public ChatClient() : this(new Dictionary<ResponseCode, IResponseHandler>
+        {
+            {ResponseCode.Success, new SuccessHandler()},
+            {ResponseCode.LoginSuccess, new LoginHandler()},
+            {ResponseCode.Error, new ErrorHandler()},
+            {ResponseCode.NewMessage, new NewTextHandler()}
+        })
+        {
+            
         }
 
         public void Restart()
         {
             Client = new Network.Client.Client(Constants.IP, Constants.PORT);
+        }
+
+        public void Start()
+        {
+            ReaderThread.Start();
         }
 
         public void Start(RequestManager manager)
@@ -63,6 +72,13 @@ namespace Chat.Client
             {
                 var response = Responses.Dequeue();
                 Handlers[response.Code].Handle(this, response);
+                if (!response.Key.Equals("".PadLeft(Constants.REQUEST_KEY_SEGMENT, '0')))
+                {
+                    WaitingRequests.Remove(new RequestData
+                    {
+                        Key = response.Key
+                    });
+                }
             }
         }
 
@@ -79,17 +95,16 @@ namespace Chat.Client
                 {
                     return;
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    
+                    Console.WriteLine(e);
                 }
             }
         }
 
         private ResponseData ReadResponse()
         {
-            int len = Client.ReceiveInt(Constants.LENGTH_SEGMNET);
-            string raw = Client.ReceiveString(len);
+            string raw = Client.ReceiveString(Client.ReceiveInt(Constants.LENGTH_SEGMNET));
             string key = raw.Substring(0, Constants.REQUEST_KEY_SEGMENT);
             raw = raw.Substring(Constants.REQUEST_KEY_SEGMENT);
             Enum.TryParse(raw.Substring(0, Constants.CODE_SEGMNET), out ResponseCode code);

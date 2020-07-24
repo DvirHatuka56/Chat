@@ -8,14 +8,7 @@ namespace Chat.Client.ResponseHandlers
     {
         public void Handle(ChatClient client, ResponseData response)
         {
-            SuccessResponse successResponse = new SuccessResponse(response.Key, response.Raw);
-            
-            Console.WriteLine($"Request {response.Key} succeeded");
-            
-            client.WaitingRequests.Remove(new RequestData
-            {
-                Key = successResponse.Key
-            });
+            Console.WriteLine($"Request {new SuccessResponse(response.Key, response.Raw).Key} succeeded");
         }
     }
 }

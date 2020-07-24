@@ -13,11 +13,6 @@ namespace Chat.Client.ResponseHandlers
             client.User.Name = loginResponse.Name;
 
             Console.WriteLine("Logged in successfully");
-            
-            client.WaitingRequests.Remove(new RequestData
-            {
-                Key = loginResponse.Key
-            });
         }
     }
 }
