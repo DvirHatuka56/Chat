@@ -4,10 +4,9 @@
 # Build files
 ChatServer/bin/
 ChatServer/obj/
-ConsoleChatClient/bin/
-ConsoleChatClient/obj/
+ChatClient/bin/
+ChatClient/obj/
 
 # Solution files
 Chat.sln.DotSettings.user
 ChatServer/ChatServer.csproj.user
-ConsoleChatClient/ConsoleChatClient.csproj

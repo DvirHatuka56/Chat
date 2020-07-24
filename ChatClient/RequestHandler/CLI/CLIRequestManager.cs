@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ConsoleChatClient.RequestHandler.CLI
+namespace ChatClient.RequestHandler.CLI
 {
     // ReSharper disable once InconsistentNaming
     public class CLIRequestManager : RequestManager
@@ -31,10 +31,6 @@ namespace ConsoleChatClient.RequestHandler.CLI
                 if (Handlers.ContainsKey(command))
                 {
                     Handlers[command].Handle(Client);
-                }
-                else
-                {
-                    Console.WriteLine($"{command} is not supported");
                 }
             }
         }
