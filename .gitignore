@@ -2,11 +2,14 @@
 /.idea/
 
 # Build files
-ChatServer/bin/
-ChatServer/obj/
-ChatClient/bin/
-ChatClient/obj/
+Chat.Server/bin/
+Chat.Server/obj/
+Chat.Client/bin/
+Chat.Client/obj/
+Chat.Client.Desktop/bin/
+Chat.Client.Desktop/obj/
+
 
 # Solution files
 Chat.sln.DotSettings.user
-ChatServer/ChatServer.csproj.user
+Chat.Server/ChatServer.csproj.user
