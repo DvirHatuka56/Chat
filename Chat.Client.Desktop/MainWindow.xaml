@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:Chat.Client.Desktop"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        <Label x:Name="Label"></Label>
-    </Grid>
+    <StackPanel>
+        <Label x:Name="Label"/>
+        <Button Content="Update" Click="Update_OnClick"/>
+    </StackPanel>
 </Window>

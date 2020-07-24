@@ -1,4 +1,7 @@
-﻿namespace Chat.Client.Desktop
+﻿using System.Windows;
+using Chat.Client.Requests;
+
+namespace Chat.Client.Desktop
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -11,6 +14,11 @@
             InitializeComponent();
             Client = client;
             Label.Content = $"{Client.User} logged in";
+        }
+
+        private void Update_OnClick(object sender, RoutedEventArgs e)
+        {
+            Client.SendRequest(new UpdateRequest(ChatClient.GenerateKey(), new []{1111, 3339}));
         }
     }
 }
