@@ -4,6 +4,7 @@
     {
         Success = 200,
         LoginSuccess = 210,
+        ResponseSuccess = 220,
         NewMessage = 300,
         Error = 400
     }

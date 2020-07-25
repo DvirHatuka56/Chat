@@ -6,6 +6,7 @@ using Chat.Client.Responses;
 using LoginHandler = Chat.Client.Desktop.ResponseHandlers.LoginHandler;
 using ErrorHandler = Chat.Client.Desktop.ResponseHandlers.ErrorHandler;
 using NewTextHandler = Chat.Client.Desktop.ResponseHandlers.NewTextHandler;
+using RegisterHandler = Chat.Client.Desktop.ResponseHandlers.RegisterHandler;
 
 namespace Chat.Client.Desktop
 {
@@ -23,7 +24,8 @@ namespace Chat.Client.Desktop
                 {ResponseCode.LoginSuccess, new LoginHandler()},
                 {ResponseCode.Success, new SuccessHandler()},
                 {ResponseCode.Error, new ErrorHandler()},
-                {ResponseCode.NewMessage, new NewTextHandler()}
+                {ResponseCode.NewMessage, new NewTextHandler()},
+                {ResponseCode.ResponseSuccess, new RegisterHandler()}
             });
             MainWindow = new LoginWindow(Client);
             MainWindow.Show();

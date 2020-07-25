@@ -39,7 +39,8 @@ namespace Chat.Client
             {ResponseCode.Success, new SuccessHandler()},
             {ResponseCode.LoginSuccess, new LoginHandler()},
             {ResponseCode.Error, new ErrorHandler()},
-            {ResponseCode.NewMessage, new NewTextHandler()}
+            {ResponseCode.NewMessage, new NewTextHandler()},
+            {ResponseCode.ResponseSuccess, new RegisterHandler()}
         })
         {
             

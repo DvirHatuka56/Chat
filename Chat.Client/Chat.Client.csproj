@@ -68,10 +68,12 @@
         <Compile Include="ResponseHandlers\LoginHandler.cs" />
         <Compile Include="ResponseHandlers\NewTextHandler.cs" />
         <Compile Include="ResponseHandlers\IResponseHandler.cs" />
+        <Compile Include="ResponseHandlers\RegisterHandler.cs" />
         <Compile Include="ResponseHandlers\SuccessHandler.cs" />
         <Compile Include="Responses\ErrorResponse.cs" />
         <Compile Include="Responses\LoginResponse.cs" />
         <Compile Include="Responses\NewTextResponse.cs" />
+        <Compile Include="Responses\RegisterResponse.cs" />
         <Compile Include="Responses\Response.cs" />
         <Compile Include="Responses\SuccessResponse.cs" />
     </ItemGroup>
