@@ -6,7 +6,7 @@ namespace Chat.Server.Responses
     {
         private User User { get; }
 
-        public RegisterResponse(string key, User user) : base(ResponseCode.Success, key)
+        public RegisterResponse(string key, User user) : base(ResponseCode.RegisterSuccess, key)
         {
             User = user;
         }

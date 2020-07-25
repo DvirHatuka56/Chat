@@ -6,7 +6,7 @@ namespace Chat.Client.ResponseHandlers
     {
         public void Handle(ChatClient client, ResponseData response)
         {
-            RegisterResponse registerResponse = new RegisterResponse(response.Code, response.Key, response.Raw);
+            RegisterResponse registerResponse = new RegisterResponse(response.Key, response.Raw);
             client.User.Id = registerResponse.Id;
             client.User.Name = registerResponse.Name;
         }

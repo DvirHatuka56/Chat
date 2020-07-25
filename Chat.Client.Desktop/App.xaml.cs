@@ -25,7 +25,7 @@ namespace Chat.Client.Desktop
                 {ResponseCode.Success, new SuccessHandler()},
                 {ResponseCode.Error, new ErrorHandler()},
                 {ResponseCode.NewMessage, new NewTextHandler()},
-                {ResponseCode.ResponseSuccess, new RegisterHandler()}
+                {ResponseCode.RegisterSuccess, new RegisterHandler()}
             });
             MainWindow = new LoginWindow(Client);
             MainWindow.Show();

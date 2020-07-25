@@ -9,6 +9,8 @@
             <controls:Field x:Name="Password" Display="Password" IsPassword="True"/>
             <Button Click="Login_OnClick" Content="Login"
                     HorizontalAlignment="Center"/>
+            <Button Content="Register" Click="Register_OnClick"/>
+
         </StackPanel>
     </Window.Content>
 </Window>

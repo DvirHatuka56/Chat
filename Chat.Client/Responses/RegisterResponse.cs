@@ -8,11 +8,12 @@ namespace Chat.Client.Responses
         public int Id { get; private set; }
         public string Name { get; private set; }
         
-        public RegisterResponse(ResponseCode code, string key, string response) : base(code, key, response)
+        public RegisterResponse(string key, string response) : base(ResponseCode.RegisterSuccess, key, response)
         {
+            Deserialize(response);
         }
 
-        protected override void Deserialize(string response)
+        protected sealed override void Deserialize(string response)
         {
             if (!response.StartsWith(((int) Code).ToString()))
             {

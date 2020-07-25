@@ -8,10 +8,11 @@
         Title="RegisterWindow" Height="450" Width="800">
     <Window.Content>
         <StackPanel>
-            <controls:Field x:Name="Name" Display="Name"/>
+            <controls:Field x:Name="Username" Display="Name"/>
             <controls:Field x:Name="Password" Display="Password" IsPassword="True"/>
             <controls:Field x:Name="RePassword" Display="Repeat Password" IsPassword="True"/>
             <Button Content="Register" Click="Register_OnClick"/>
+            <Button Content="Login" Click="Login_OnClick"/>
         </StackPanel>
     </Window.Content>
 </Window>

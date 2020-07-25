@@ -40,7 +40,7 @@ namespace Chat.Client
             {ResponseCode.LoginSuccess, new LoginHandler()},
             {ResponseCode.Error, new ErrorHandler()},
             {ResponseCode.NewMessage, new NewTextHandler()},
-            {ResponseCode.ResponseSuccess, new RegisterHandler()}
+            {ResponseCode.RegisterSuccess, new RegisterHandler()}
         })
         {
             

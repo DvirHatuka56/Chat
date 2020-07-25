@@ -20,7 +20,15 @@ namespace Chat.Client.Desktop
                 MessageBox.Show("Passwords do not match");
                 return;
             }
-            Client.SendRequest(new RegisterRequest(ChatClient.GenerateKey(), Name.Value, Password.Password));
+            Client.SendRequest(new RegisterRequest(ChatClient.GenerateKey(), Username.Value, Password.Password));
+        }
+
+        private void Login_OnClick(object sender, RoutedEventArgs e)
+        {
+            Window prev = Application.Current.MainWindow;
+            Application.Current.MainWindow = new LoginWindow(((App) Application.Current).Client);
+            prev?.Close();
+            Application.Current.MainWindow.Show();
         }
     }
 }
